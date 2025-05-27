@@ -5,20 +5,19 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-books-list',
+  selector: 'app-buecherverwaltung',
   standalone:true,
   imports: [
     CommonModule,
     FormsModule,
     RouterModule
   ],
-  templateUrl: './books-list.component.html',
-  styleUrl: './books-list.component.css'
+  templateUrl: './buecherverwaltung.component.html',
+  styleUrl: './buecherverwaltung.component.css'
 })
-export class BooksListComponent {
+export class BuecherverwaltungComponent {
  books: Book[] = [];
 
   displayedBooks: Book[] = [];
