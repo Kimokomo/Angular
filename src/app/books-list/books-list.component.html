@@ -1,0 +1,132 @@
+<!-- Bücher Form um neues Buch anzulegen  -->
+<div class="container mt-4">
+  <h1 class="mb-4">📚 Bibliothek</h1>
+
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      Neues Buch hinzufügen
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="addBook()" #bookForm="ngForm" class="row g-3">
+        <div class="col-md-6">
+          <label for="titel" class="form-label">Titel:</label>
+          <input type="text" class="form-control" id="titel" name="titel" required [(ngModel)]="newBook.titel" />
+        </div>
+
+        <div class="col-md-6">
+          <label for="autor" class="form-label">Autor:</label>
+          <input type="text" class="form-control" id="autor" name="autor" required [(ngModel)]="newBook.autor" />
+        </div>
+
+        <div class="col-md-4">
+          <label for="erscheinungsjahr" class="form-label">Jahr:</label>
+          <input type="number" class="form-control" id="erscheinungsjahr" name="erscheinungsjahr" required
+            [(ngModel)]="newBook.erscheinungsjahr" />
+        </div>
+
+        <div class="col-md-4">
+          <label for="verfuegbar" class="form-label">Verfügbar:</label>
+          <select class="form-select" id="verfuegbar" name="verfuegbar" [(ngModel)]="newBook.verfuegbar">
+            <option value="J">JA</option>
+            <option value="N">NEIN</option>
+          </select>
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Buch hinzufügen
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Bücher Liste  -->
+<div class="table-responsive mt-4">
+  <h2 class="mb-3">Vorhandene Bücher</h2>
+  <table class="table table-bordered table-striped align-middle shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Titel</th>
+        <th>Autor</th>
+        <th>Jahr</th>
+        <th>Verfügbar</th>
+        <th>Aktionen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of displayedBooks">
+        <ng-container *ngIf="editBookId !== book.id; else editRow">
+          <td>{{ book.id }}</td>
+          <td>{{ book.titel }}</td>
+          <td>{{ book.autor }}</td>
+          <td>{{ book.erscheinungsjahr }}</td>
+          <td>
+            <span class="badge" [ngClass]="book.verfuegbar === 'J' ? 'bg-success' : 'bg-danger'">
+              {{ book.verfuegbar === 'J' ? 'JA' : 'NEIN' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-primary me-2" (click)="startEdit(book)">
+              <i class="bi bi-pencil"></i> Bearbeiten
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteBook(book.id!)">
+              <i class="bi bi-trash"></i> Löschen
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-template #editRow>
+          <td>{{ editBook.id }}</td>
+          <td>
+            <input [(ngModel)]="editBook.titel" class="form-control" />
+          </td>
+          <td>
+            <input [(ngModel)]="editBook.autor" class="form-control" />
+          </td>
+          <td>
+            <input type="number" [(ngModel)]="editBook.erscheinungsjahr" class="form-control" />
+          </td>
+          <td>
+            <select [(ngModel)]="editBook.verfuegbar" class="form-select">
+              <option value="J">Ja</option>
+              <option value="N">Nein</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-success me-2" (click)="saveEdit()">
+              <i class="bi bi-check"></i> Speichern
+            </button>
+            <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
+              <i class="bi bi-x"></i> Abbrechen
+            </button>
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<nav aria-label="Bücher Paginierung">
+  <ul class="pagination justify-content-center mt-3">
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <button class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Zurück" [disabled]="currentPage === 1">
+        <span aria-hidden="true">&laquo;</span>
+      </button>
+    </li>
+
+    <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+      <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+    </li>
+
+    <li class="page-item" [class.disabled]="currentPage === totalPages">
+      <button class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Weiter"
+        [disabled]="currentPage === totalPages">
+        <span aria-hidden="true">&raquo;</span>
+      </button>
+    </li>
+  </ul>
+</nav>

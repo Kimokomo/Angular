@@ -1,0 +1,4 @@
+<input [(ngModel)]="username" placeholder="Username" class="form-control mb-2" />
+<input [(ngModel)]="password" placeholder="Password" type="password" class="form-control mb-2" />
+<button class="btn btn-success" (click)="login()">Login</button>
+<p *ngIf="error" class="text-danger mt-2">Ungültige Anmeldedaten</p>
