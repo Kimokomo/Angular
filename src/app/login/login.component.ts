@@ -19,7 +19,7 @@ export class LoginComponent {
 
   login() {
     if (this.auth.login(this.username, this.password)) {
-      this.router.navigate(['/first']);
+      this.router.navigate(['/buecherverwaltung']);
     } else {
       this.error = true;
     }

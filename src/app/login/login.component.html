@@ -1,4 +1,23 @@
-<input [(ngModel)]="username" placeholder="Username" class="form-control mb-2" />
-<input [(ngModel)]="password" placeholder="Password" type="password" class="form-control mb-2" />
-<button class="btn btn-success" (click)="login()">Login</button>
-<p *ngIf="error" class="text-danger mt-2">Ungültige Anmeldedaten</p>
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+    <h4 class="text-center mb-4">🔐 Login</h4>
+
+    <div class="form-floating mb-3">
+      <input [(ngModel)]="username" id="username" type="text" class="form-control" placeholder="Username" />
+      <label for="username"><i class="fas fa-user me-2"></i>Username</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input [(ngModel)]="password" id="password" type="password" class="form-control" placeholder="Password" />
+      <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+    </div>
+
+    <button class="btn btn-success w-100 py-2" (click)="login()">
+      <i class="fas fa-sign-in-alt me-2"></i>Login
+    </button>
+
+    <p *ngIf="error" class="text-danger text-center mt-3">
+      <i class="fas fa-exclamation-circle me-1"></i>Ungültige Anmeldedaten
+    </p>
+  </div>
+</div>

@@ -1,12 +1,11 @@
 <div class="container mt-4">
 
-  <div class="d-flex justify-content-end mb-3 gap-2">
-    <button class="btn btn-primary" routerLink="/login">Login</button>
-    <button class="btn btn-secondary" (click)="logout()">Logout</button>
-  </div>
+<div class="d-flex justify-content-end mb-3 gap-2">
+  <button class="btn btn-danger" (click)="logout()">Logout</button>
+</div>
 
   <nav class="nav nav-pills mb-4">
-    <a class="nav-link" routerLink="/first" routerLinkActive="active">First</a>
+    <a class="nav-link" routerLink="/login" routerLinkActive="active">Home</a>
     <a class="nav-link" routerLink="/buecherverwaltung" routerLinkActive="active">Bibliothek</a>
     <a class="nav-link" routerLink="/aboutus" routerLinkActive="active">About Us</a>
   </nav>
