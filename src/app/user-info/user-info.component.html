@@ -1,0 +1,12 @@
+<div *ngIf="userInfo$ | async as userInfo; else loggedOut">
+  <small><strong>username: {{ userInfo.username }}</strong></small> <br>
+  <small><strong>(role: {{ userInfo.role }})</strong></small>
+</div>
+
+
+<ng-template #loggedOut>
+  <p><small>no user</small></p>
+</ng-template> 
+
+
+
