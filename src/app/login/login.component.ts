@@ -18,10 +18,13 @@ export class LoginComponent {
   constructor(private auth: AuthService, private router: Router) { }
 
   login() {
-    if (this.auth.login(this.username, this.password)) {
-      this.router.navigate(['/buecherverwaltung']);
-    } else {
-      this.error = true;
-    }
+    this.error = false;
+    this.auth.login(this.username, this.password).subscribe(success => {
+      if (success) {
+        this.router.navigate(['/buecherverwaltung']);
+      } else {
+        this.error = true;
+      }
+    });
   }
 }

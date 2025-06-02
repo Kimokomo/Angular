@@ -2,18 +2,24 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient, withXsrfConfiguration } from '@angular/common/http';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+
+import {
+  provideHttpClient,
+  withXsrfConfiguration,
+  withInterceptors
+} from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-
-      provideHttpClient(
+    provideHttpClient(
       withXsrfConfiguration({
-        cookieName: 'XSRF-TOKEN',  // Default XSRF cookie name
-        headerName: 'X-XSRF-TOKEN',  // Header for XSRF token
-      })
+        cookieName: 'XSRF-TOKEN',
+        headerName: 'X-XSRF-TOKEN'
+      }),
+      withInterceptors([JwtInterceptor]) // ✅ hier dein Interceptor
     ),
-    provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes)
+    provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true })
   ]
 };

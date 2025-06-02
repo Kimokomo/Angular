@@ -9,7 +9,9 @@ import { Observable } from 'rxjs';
 })
 export class BookService {
 
-    private apiUrl = 'http://91.99.135.252/api/books';
+    //private apiUrl = 'http://91.99.135.252/api/books';
+     private apiUrl = 'http://localhost:8080/api/books';
+
 
       constructor(private http: HttpClient) { }
 
@@ -22,7 +24,7 @@ export class BookService {
   }
 
   updateBook(book: Book) {
-    return this.http.put(`http://91.99.135.252/api/books/${book.id}`, book);
+    return this.http.put(`http://localhost:8080/api/books/${book.id}`, book);
   }
 
   getBooksPaginated(page: number, size: number): Observable<BuchPage> {
