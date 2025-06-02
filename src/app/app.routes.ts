@@ -3,6 +3,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
 import { BuecherverwaltungComponent } from './buecherverwaltung/buecherverwaltung.component';
+import { RegisterUserLoginFormComponent } from './register-user-login-form/register-user-login-form.component';
 
 export const routes: Routes = [
 
@@ -13,4 +14,7 @@ export const routes: Routes = [
   { path: 'aboutus', component: AboutusComponent, canActivate: [AuthGuard] },
 
   { path: 'login', component: LoginComponent },
+
+    { path: 'register', component: RegisterUserLoginFormComponent },
+
 ];

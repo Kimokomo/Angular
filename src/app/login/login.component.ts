@@ -27,4 +27,9 @@ export class LoginComponent {
       }
     });
   }
+
+  register(): void {
+  // Beispiel: Navigation zu einer Registrierungsseite
+  this.router.navigate(['/register']);
+}
 }

@@ -1,0 +1,52 @@
+<div class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
+  <h4 class="text-center mb-4">📝 Registrieren</h4>
+
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+
+    <div class="form-floating mb-3">
+      <input formControlName="email" type="email" class="form-control" id="email" placeholder="Email" />
+      <label for="email">📧 Email*</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input formControlName="username" type="text" class="form-control" id="username" placeholder="Username" />
+      <label for="username">👤 Benutzername*</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input formControlName="password" type="password" class="form-control" id="password" placeholder="Password" />
+      <label for="password">🔒 Passwort*</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input formControlName="firstname" type="text" class="form-control" id="firstname" placeholder="First Name" />
+      <label for="firstname">First Name</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input formControlName="lastname" type="text" class="form-control" id="lastname" placeholder="Last Name" />
+      <label for="lastname">Last Name</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input formControlName="age" type="number" class="form-control" id="age" placeholder="Age" />
+      <label for="age">Age</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input formControlName="dateOfBirth" type="date" class="form-control" id="dateOfBirth" placeholder="Date of Birth" />
+      <label for="dateOfBirth">Date of Birth</label>
+    </div>
+
+    <button class="btn btn-primary w-100" type="submit" [disabled]="registerForm.invalid">
+      <i class="fas fa-user-plus me-1"></i>Registrieren
+    </button>
+  </form>
+
+  <div *ngIf="success" class="alert alert-success text-center mt-3">
+    ✅ Registrierung erfolgreich!
+  </div>
+  <div *ngIf="error" class="alert alert-danger text-center mt-3">
+    ❌ Fehler bei der Registrierung!
+  </div>
+</div>

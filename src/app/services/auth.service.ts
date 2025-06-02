@@ -53,6 +53,18 @@ export class AuthService {
     return this.http.get<{ username: string; role: string }>('http://localhost:8080/api/auth/userinfo');
   }
 
+
+  register(username: string, password: string): Observable<boolean> {
+    return this.http.post<{ message: string }>('http://localhost:8080/api/auth/register', {
+      username,
+      password
+    }).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
+  }
+
+
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.userInfoSubject.next(null);  // Userinfo zurücksetzen beim Logout
