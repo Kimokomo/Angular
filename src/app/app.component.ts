@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
-import { UserInfoComponent } from './user-info/user-info.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +8,6 @@ import { UserInfoComponent } from './user-info/user-info.component';
   imports: [
     RouterOutlet,
     RouterModule,
-    UserInfoComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
