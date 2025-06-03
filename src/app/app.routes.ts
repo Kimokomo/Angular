@@ -10,8 +10,6 @@ import { TerminUebersichtComponent } from './termin-uebersicht/termin-uebersicht
 
 export const routes: Routes = [
 
- 
-
   { path: 'superadmin/buecherverwaltung', component: BuecherverwaltungComponent, canActivate: [AuthGuard] },
 
   { path: 'aboutus', component: AboutusComponent },
@@ -20,16 +18,15 @@ export const routes: Routes = [
 
   { path: 'register', component: RegisterUserLoginFormComponent },
 
-  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
+  { path: 'member/profile', component: UserProfileComponent, canActivate: [AuthGuard] },
 
   { path: 'terminbuchung', component: TerminBuchungComponent, canActivate: [AuthGuard] },
 
   { path: 'admin/terminuebersicht', component: TerminUebersichtComponent, canActivate: [AuthGuard] },
 
-  { path: '', component: LoginComponent },
-  { path: '**', redirectTo: '/login' },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
+  { path: '**', redirectTo: '/login' }
 
 
 ];
