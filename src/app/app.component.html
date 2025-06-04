@@ -7,10 +7,10 @@
   <nav class="nav nav-pills mb-4">
     
 
-    <a class="nav-link" routerLink="/login" routerLinkActive="active">Willkommen</a>
-    <a class="nav-link" routerLink="/member/profile" routerLinkActive="active">Profil</a>
+    <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+    <a *ngIf="auth.isMember()" class="nav-link" routerLink="/member/profile" routerLinkActive="active">Profil</a>
     <a *ngIf="auth.isAdmin()" class="nav-link" routerLink="/admin/terminuebersicht" routerLinkActive="active">Terminübersicht</a>
-    <a class="nav-link" routerLink="member/terminbuchung" routerLinkActive="active">Terminbuchung</a>
+    <a *ngIf="auth.isMember()" class="nav-link"  routerLink="member/terminbuchung" routerLinkActive="active">Terminbuchung</a>
     <a class="nav-link" routerLink="/aboutus" routerLinkActive="active">Kontakt</a>
     <a *ngIf="auth.isSuperAdmin()" class="nav-link" routerLink="/superadmin/buecherverwaltung" routerLinkActive="active">Bibliothek</a>
 
