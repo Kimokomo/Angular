@@ -1,16 +1,20 @@
 <div class="container mt-4">
 
 <div class="d-flex justify-content-end mb-3 gap-2">
-  <button class="btn btn-danger" (click)="logout()">Logout</button>
+  <button *ngIf="auth.isAuthenticated()" class="btn btn-danger" (click)="logout()">Logout</button>
 </div>
 
   <nav class="nav nav-pills mb-4">
+    
+
     <a class="nav-link" routerLink="/login" routerLinkActive="active">Willkommen</a>
     <a class="nav-link" routerLink="/member/profile" routerLinkActive="active">Profil</a>
-    <a class="nav-link" routerLink="/admin/terminuebersicht" routerLinkActive="active">Terminübersicht</a>
-    <a class="nav-link" routerLink="/terminbuchung" routerLinkActive="active">Terminbuchung</a>
+    <a *ngIf="auth.isAdmin()" class="nav-link" routerLink="/admin/terminuebersicht" routerLinkActive="active">Terminübersicht</a>
+    <a class="nav-link" routerLink="member/terminbuchung" routerLinkActive="active">Terminbuchung</a>
     <a class="nav-link" routerLink="/aboutus" routerLinkActive="active">Kontakt</a>
-    <a class="nav-link" routerLink="/superadmin/buecherverwaltung" routerLinkActive="active">Bibliothek</a>
+    <a *ngIf="auth.isSuperAdmin()" class="nav-link" routerLink="/superadmin/buecherverwaltung" routerLinkActive="active">Bibliothek</a>
+
+
   </nav>
 
   <div class="p-4 border rounded shadow-sm bg-light">

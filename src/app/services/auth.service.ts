@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { tap, catchError, map } from 'rxjs/operators';
+import { tap, catchError, map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { UserInfo } from '../models/userinfo';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,50 @@ export class AuthService {
       tap(response => {
         localStorage.setItem(this.tokenKey, response.token);
       }),
+      // Nach dem Speichern des Tokens, Userinfos abrufen
+      switchMap(() => this.fetchUserInfo()),
+      // fetchUserInfo() liefert z.B. UserInfo, wir mappen es auf true
       map(() => true),
       catchError(() => {
         localStorage.removeItem(this.tokenKey);
+        localStorage.removeItem('userInfo'); // Userinfos entfernen falls vorhanden
         return of(false);
       })
     );
+  }
+
+
+  fetchUserInfo() {
+    return this.http.get<UserInfo>('http://localhost:8080/api/auth/member/userinfo').pipe(
+      tap(userInfo => {
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      })
+    );
+  }
+
+  getUserRole(): string | null {
+    const userInfo = localStorage.getItem('userInfo');
+    if (!userInfo) return null;
+    try {
+      return JSON.parse(userInfo).role || null;
+    } catch {
+      return null;
+    }
+  }
+
+
+  isSuperAdmin(): boolean {
+    return this.getUserRole() === 'superadmin';
+  }
+
+  isAdmin(): boolean {
+    const role = this.getUserRole();
+    return role === 'admin' || role === 'superadmin';
+  }
+
+  isMember(): boolean {
+    const role = this.getUserRole();
+    return role === 'user' || this.isAdmin() || this.isSuperAdmin();
   }
 
   // wird in der app.component.ts verwendet

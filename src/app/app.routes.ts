@@ -10,7 +10,37 @@ import { TerminUebersichtComponent } from './termin-uebersicht/termin-uebersicht
 
 export const routes: Routes = [
 
-  { path: 'superadmin/buecherverwaltung', component: BuecherverwaltungComponent, canActivate: [AuthGuard] },
+  {
+    path: 'superadmin/buecherverwaltung',
+    component: BuecherverwaltungComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['superadmin'] }
+  },
+
+  {
+    path: 'admin/terminuebersicht',
+    component: TerminUebersichtComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['admin', 'superadmin'] }
+  },
+
+
+  {
+    path: 'member',
+    canActivate: [AuthGuard],
+    data: { roles: ['user', 'admin', 'superadmin'] },
+    children: [
+      {
+        path: 'profile',
+        component: UserProfileComponent
+      },
+      {
+        path: 'terminbuchung',
+        component: TerminBuchungComponent
+      }
+    ]
+  },
+
 
   { path: 'aboutus', component: AboutusComponent },
 
@@ -18,15 +48,8 @@ export const routes: Routes = [
 
   { path: 'register', component: RegisterUserLoginFormComponent },
 
-  { path: 'member/profile', component: UserProfileComponent, canActivate: [AuthGuard] },
-
-  { path: 'terminbuchung', component: TerminBuchungComponent, canActivate: [AuthGuard] },
-
-  { path: 'admin/terminuebersicht', component: TerminUebersichtComponent, canActivate: [AuthGuard] },
-
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   { path: '**', redirectTo: '/login' }
-
 
 ];
