@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
         cookieName: 'XSRF-TOKEN',
         headerName: 'X-XSRF-TOKEN'
       }),
-      withInterceptors([JwtInterceptor]) // ✅ hier dein Interceptor
+      withInterceptors([JwtInterceptor])
     ),
     provideRouter(routes),
     provideZoneChangeDetection({ eventCoalescing: true })

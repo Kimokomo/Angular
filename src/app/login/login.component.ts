@@ -21,7 +21,7 @@ export class LoginComponent {
     this.error = false;
     this.auth.login(this.username, this.password).subscribe(success => {
       if (success) {
-        this.router.navigate(['superadmin/buecherverwaltung']);
+        this.router.navigate(['/member/profile']);
       } else {
         this.error = true;
       }

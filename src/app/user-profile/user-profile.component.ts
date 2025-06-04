@@ -16,7 +16,7 @@ export class UserProfileComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get<UserInfo>('http://localhost:8080/api/auth/userinfo').subscribe({
+    this.http.get<UserInfo>('http://localhost:8080/api/auth/member/userinfo').subscribe({
       next: (data) => {
         this.userInfo = data;
       },

@@ -9,13 +9,13 @@ import { Observable } from 'rxjs';
 })
 export class BookService {
 
-    //private apiUrl = 'http://91.99.135.252/api/books';
-     private apiUrl = 'http://localhost:8080/api/books';
+  //private apiUrl = 'http://91.99.135.252/api/books';
+  private apiUrl = 'http://localhost:8080/api/books';
 
 
-      constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getBooks(): Observable<Book[]> {
+  getBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(this.apiUrl);
   }
 
@@ -28,6 +28,6 @@ export class BookService {
   }
 
   getBooksPaginated(page: number, size: number): Observable<BuchPage> {
-    return this.http.get<BuchPage>(`${this.apiUrl}/paginated/${page}/${size}`);
+    return this.http.get<BuchPage>(`${this.apiUrl}/superadmin/paginated/${page}/${size}`);
   }
 }
