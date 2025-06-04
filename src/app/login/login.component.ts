@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  standalone:true,
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html'
 })
@@ -29,6 +29,6 @@ export class LoginComponent {
   }
 
   register(): void {
-  this.router.navigate(['/register']);
-}
+    this.router.navigate(['/register']);
+  }
 }
