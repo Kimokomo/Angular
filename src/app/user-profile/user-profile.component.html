@@ -1,4 +1,4 @@
-<ng-container *ngIf="userInfo as user; else loading">
+<!-- <ng-container *ngIf="userInfo as user; else loading">
   <p><strong>Email:</strong> {{ user.email }}</p>
   <p><strong>Benutzername:</strong> {{ user.username }}</p>
   <p><strong>Rolle:</strong> {{ user.role }}</p>
@@ -6,4 +6,25 @@
 
 <ng-template #loading>
   <p>Benutzerdaten werden geladen...</p>
-</ng-template>
+</ng-template> -->
+
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+  <div class="card shadow" style="width: 350px;">
+    <div class="card-body">
+      <ng-container *ngIf="userInfo as user; else loading">
+        <h5 class="card-title text-center mb-4">Benutzerprofil</h5>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Benutzername:</strong> {{ user.username }}</p>
+        <p><strong>Rolle:</strong> {{ user.role }}</p>
+      </ng-container>
+
+      <ng-template #loading>
+        <div class="d-flex justify-content-center align-items-center" style="height: 100px;">
+          <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
