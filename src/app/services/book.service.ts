@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import { Book } from '../models/book.model';
 import { BuchPage } from '../models/bookpage.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
 
-  //private apiUrl = 'http://91.99.135.252/api/books';
-  private apiUrl = 'https://slicy.it.com/api/books';
+  static readonly API_URL = `${environment.apiBaseUrl}`;
+
+  private apiUrl = `${environment.apiBaseUrl}/books`;
 
 
   constructor(private http: HttpClient) { }
@@ -24,7 +26,7 @@ export class BookService {
   }
 
   updateBook(book: Book) {
-    return this.http.put(`https://slicy.it.com/api/books/${book.id}`, book);
+    return this.http.put(`${this.apiUrl}/${book.id}`, book);
   }
 
   getBooksPaginated(page: number, size: number): Observable<BuchPage> {

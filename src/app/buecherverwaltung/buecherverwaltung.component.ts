@@ -5,10 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-buecherverwaltung',
-  standalone:true,
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -18,7 +19,11 @@ import { RouterModule } from '@angular/router';
   styleUrl: './buecherverwaltung.component.css'
 })
 export class BuecherverwaltungComponent {
- books: Book[] = [];
+
+
+  static readonly API_URL = `${environment.apiBaseUrl}`;
+
+  books: Book[] = [];
 
   displayedBooks: Book[] = [];
 
@@ -74,7 +79,7 @@ export class BuecherverwaltungComponent {
 
   deleteBook(id: number) {
     if (confirm('Möchten Sie dieses Buch wirklich löschen?')) {
-      this.http.delete(`http://slicy.it.com/api/books/${id}`).subscribe(() => {
+      this.http.delete(`${environment.apiBaseUrl}/books/${id}`).subscribe(() => {
         // Buch aus der aktuell angezeigten Seite entfernen
         this.displayedBooks = this.displayedBooks.filter(b => b.id !== id);
 

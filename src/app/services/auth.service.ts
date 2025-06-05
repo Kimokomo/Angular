@@ -3,11 +3,16 @@ import { tap, catchError, map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UserInfo } from '../models/userinfo';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  static readonly API_URL = `${environment.apiBaseUrl}`;
+
 
   private tokenKey = 'jwt_token';
 
@@ -16,7 +21,7 @@ export class AuthService {
 
   // wird im login.component.ts verwendet
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post<{ token: string }>('https://slicy.it.com/api/auth/login', { username, password }).pipe(
+    return this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/login`, { username, password }).pipe(
       tap(response => {
         localStorage.setItem(this.tokenKey, response.token);
       }),
@@ -34,7 +39,7 @@ export class AuthService {
 
 
   fetchUserInfo() {
-    return this.http.get<UserInfo>('https://slicy.it.com/api/auth/member/userinfo').pipe(
+    return this.http.get<UserInfo>(`${environment.apiBaseUrl}/auth/member/userinfo`).pipe(
       tap(userInfo => {
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
       })

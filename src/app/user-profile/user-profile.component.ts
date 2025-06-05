@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { UserInfo } from '../models/userinfo';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,12 +12,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
+
+  static readonly API_URL = `${environment.apiBaseUrl}`;
+
   userInfo: UserInfo | null = null;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get<UserInfo>('https://slicy.it.com/api/auth/member/userinfo').subscribe({
+    this.http.get<UserInfo>(`${environment.apiBaseUrl}/auth/member/userinfo`).subscribe({
       next: (data) => {
         this.userInfo = data;
       },
