@@ -16,7 +16,7 @@ export class AuthService {
 
   // wird im login.component.ts verwendet
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post<{ token: string }>('http://localhost:8080/api/auth/login', { username, password }).pipe(
+    return this.http.post<{ token: string }>('https://slicy.it.com/api/auth/login', { username, password }).pipe(
       tap(response => {
         localStorage.setItem(this.tokenKey, response.token);
       }),
@@ -34,7 +34,7 @@ export class AuthService {
 
 
   fetchUserInfo() {
-    return this.http.get<UserInfo>('http://localhost:8080/api/auth/member/userinfo').pipe(
+    return this.http.get<UserInfo>('https://slicy.it.com/api/auth/member/userinfo').pipe(
       tap(userInfo => {
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
       })

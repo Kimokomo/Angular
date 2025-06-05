@@ -32,7 +32,7 @@ export class RegisterUserLoginFormComponent {
 
   register() {
     if (this.registerForm.valid) {
-      this.http.post('http://localhost:8080/api/auth/register', this.registerForm.value)
+      this.http.post('https://slicy.it.com/api/auth/register', this.registerForm.value)
         .pipe(
           catchError(() => {
             this.error = true;

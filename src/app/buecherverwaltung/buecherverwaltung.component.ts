@@ -74,7 +74,7 @@ export class BuecherverwaltungComponent {
 
   deleteBook(id: number) {
     if (confirm('Möchten Sie dieses Buch wirklich löschen?')) {
-      this.http.delete(`http://localhost:8080/api/books/${id}`).subscribe(() => {
+      this.http.delete(`http://slicy.it.com/api/books/${id}`).subscribe(() => {
         // Buch aus der aktuell angezeigten Seite entfernen
         this.displayedBooks = this.displayedBooks.filter(b => b.id !== id);
 
