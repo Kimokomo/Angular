@@ -3,11 +3,12 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GoogleLoginComponent } from '../google-login-component/google-login-component.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, GoogleLoginComponent ],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
