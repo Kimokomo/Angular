@@ -48,8 +48,10 @@ export const routes: Routes = [
 
   { path: 'register', component: RegisterUserLoginFormComponent },
 
+  // wenn der Pfad http://localhost:4200/ ist dan zu /login 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
+  // kein passender Pfad dann zu /login
   { path: '**', redirectTo: '/login' }
 
 ];

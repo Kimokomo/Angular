@@ -42,26 +42,6 @@ export class RegisterUserLoginFormComponent {
     });
   }
 
-  // register() {
-  //   if (this.registerForm.valid) {
-  //     this.http.post(`${environment.apiBaseUrl}/auth/register`, this.registerForm.value)
-  //       .pipe(
-  //         catchError(() => {
-  //           this.error = true;
-  //           this.success = false;
-  //           return of(null);
-  //         })
-  //       )
-  //       .subscribe(result => {
-  //         if (result) {
-  //           this.success = true;
-  //           this.error = false;
-  //           this.registerForm.reset();
-  //         }
-  //       });
-  //   }
-  // }
-
   register() {
     if (this.registerForm.valid) {
       this.http.post<{ message: string }>(`${environment.apiBaseUrl}/auth/register`, this.registerForm.value)

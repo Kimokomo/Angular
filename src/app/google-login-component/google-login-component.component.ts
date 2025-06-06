@@ -3,6 +3,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { switchMap, tap } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-google-login-component',
@@ -16,9 +19,9 @@ export class GoogleLoginComponent {
   static readonly API_URL = `${environment.apiBaseUrl}`;
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     // Initialisiere Google Login
     google.accounts.id.initialize({
       client_id: '274943667956-m61snb3jq17mkm381bukgjte70jgn9ik.apps.googleusercontent.com',
@@ -35,24 +38,34 @@ export class GoogleLoginComponent {
       }
     );
 
-    // Optional: One-Tap Login anzeigen
+    // One-Tap Login anzeigen
     google.accounts.id.prompt();
   }
+
+
 
 
   handleCredentialResponse(response: google.accounts.id.CredentialResponse) {
     const idToken = response.credential;
 
-    // An dein Backend schicken (z. B. /auth/google)
-    this.http.post(`${environment.apiBaseUrl}/auth/google`, { idToken }).subscribe({
-      next: (data) => {
-        console.log('Login erfolgreich, JWT vom Backend:', data);
-        // JWT im LocalStorage speichern etc.
-      },
-      error: (err) => {
-        console.error('Fehler beim Login:', err);
-      },
-    });
+    this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/google`, { idToken })
+      .pipe(
+        tap(res => {
+          localStorage.setItem('jwt_token', res.token);
+        }),
+        switchMap(() => this.authService.fetchUserInfo())
+      )
+      .subscribe({
+        next: () => {
+          console.log('Google Login erfolgreich – Benutzer eingeloggt!');
+          //Weiterleitung nach Login
+          this.router.navigate(['/member/profile']);
+        },
+        error: err => {
+          console.error('Fehler beim Google-Login:', err);
+          localStorage.removeItem('jwt_token');
+          localStorage.removeItem('userInfo');
+        }
+      });
   }
-
 }
