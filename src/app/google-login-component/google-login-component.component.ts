@@ -21,10 +21,10 @@ export class GoogleLoginComponent {
 
   constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     // Initialisiere Google Login
     google.accounts.id.initialize({
-      client_id: '274943667956-m61snb3jq17mkm381bukgjte70jgn9ik.apps.googleusercontent.com',
+      client_id: environment.googleClientId,
       callback: (response: google.accounts.id.CredentialResponse) => this.handleCredentialResponse(response),
     });
 
@@ -41,10 +41,6 @@ export class GoogleLoginComponent {
     // One-Tap Login anzeigen
     google.accounts.id.prompt();
   }
-
-
-
-
   handleCredentialResponse(response: google.accounts.id.CredentialResponse) {
     const idToken = response.credential;
 

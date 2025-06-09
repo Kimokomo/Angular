@@ -16,6 +16,7 @@
         <h5 class="card-title text-center mb-4">Benutzerprofil</h5>
         <p><strong>Benutzername:</strong> {{ user.username }}</p>
         <p><strong>Rolle:</strong> {{ user.role }}</p>
+        <p><strong>Token läuft ab in:</strong> {{ remainingTime | timeFormat }}</p>
       </ng-container>
 
       <ng-template #loading>
