@@ -1,11 +1,14 @@
 /// <reference types="google.accounts" />
 
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { DOCUMENT } from '@angular/common';
+import { UserInfo } from '../models/userinfo';
+import { GoogleLoginService } from '../services/google-login.service';
 
 @Component({
   selector: 'app-google-login-component',
@@ -16,21 +19,29 @@ import { AuthService } from '../services/auth.service';
 })
 export class GoogleLoginComponent {
 
+  readonly googleClientId = environment.googleClientId;
   static readonly API_URL = `${environment.apiBaseUrl}`;
 
+  constructor(
+    private googleLoginService: GoogleLoginService,
+    @Inject(DOCUMENT) private document: Document
+  ) { }
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
-  ngAfterViewInit(): void {
-    // Initialisiere Google Login
+  async ngAfterViewInit(): Promise<void> {
+
+    await this.googleLoginService.addGoogleScript();
+
+    // Google Identity Services initialisieren
     google.accounts.id.initialize({
       client_id: environment.googleClientId,
-      callback: (response: google.accounts.id.CredentialResponse) => this.handleCredentialResponse(response),
+      callback: (response: google.accounts.id.CredentialResponse) => this.googleLoginService.handleCredentialResponse(response),
     });
 
-    // Button rendern
+
+    // Google Login Button rendern
     google.accounts.id.renderButton(
-      document.getElementById('googleButton')!,
+      this.document.getElementById('googleButton')!,
       {
         type: 'standard',
         theme: 'outline',
@@ -38,30 +49,8 @@ export class GoogleLoginComponent {
       }
     );
 
-    // One-Tap Login anzeigen
+    // One Tap Prompt anzeigen
     google.accounts.id.prompt();
   }
-  handleCredentialResponse(response: google.accounts.id.CredentialResponse) {
-    const idToken = response.credential;
 
-    this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/google`, { idToken })
-      .pipe(
-        tap(res => {
-          localStorage.setItem('jwt_token', res.token);
-        }),
-        switchMap(() => this.authService.fetchUserInfo())
-      )
-      .subscribe({
-        next: () => {
-          console.log('Google Login erfolgreich – Benutzer eingeloggt!');
-          //Weiterleitung nach Login
-          this.router.navigate(['/member/profile']);
-        },
-        error: err => {
-          console.error('Fehler beim Google-Login:', err);
-          localStorage.removeItem('jwt_token');
-          localStorage.removeItem('userInfo');
-        }
-      });
-  }
 }

@@ -19,19 +19,18 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
 
-  // wird im login.component.ts verwendet
   login(username: string, password: string): Observable<boolean> {
     return this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/login`, { username, password }).pipe(
       tap(response => {
-        localStorage.setItem(this.tokenKey, response.token);
+        sessionStorage.setItem(this.tokenKey, response.token);
       }),
       // Nach dem Speichern des Tokens, Userinfos abrufen
       switchMap(() => this.fetchUserInfo()),
       // fetchUserInfo() liefert z.B. UserInfo, wir mappen es auf true
       map(() => true),
       catchError(() => {
-        localStorage.removeItem(this.tokenKey);
-        localStorage.removeItem('userInfo'); // Userinfos entfernen falls vorhanden
+        sessionStorage.removeItem(this.tokenKey);
+        sessionStorage.removeItem('userInfo'); // Userinfos entfernen falls vorhanden
         return of(false);
       })
     );
@@ -41,13 +40,13 @@ export class AuthService {
   fetchUserInfo() {
     return this.http.get<UserInfo>(`${environment.apiBaseUrl}/auth/member/userinfo`).pipe(
       tap(userInfo => {
-        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
       })
     );
   }
 
   getUserRole(): string | null {
-    const userInfo = localStorage.getItem('userInfo');
+    const userInfo = sessionStorage.getItem('userInfo');
     if (!userInfo) return null;
     try {
       return JSON.parse(userInfo).role || null;
@@ -73,17 +72,17 @@ export class AuthService {
 
   // wird in der app.component.ts verwendet
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.tokenKey);
   }
 
   // wird in der Guard verwendet
   isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
+    return !!sessionStorage.getItem(this.tokenKey);
   }
 
   // wird beim Interceptor verwendet
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return sessionStorage.getItem(this.tokenKey);
   }
 
   getJwtExpirationInMillis(): number | null {
