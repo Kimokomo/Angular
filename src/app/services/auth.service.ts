@@ -85,20 +85,5 @@ export class AuthService {
     return sessionStorage.getItem(this.tokenKey);
   }
 
-  getJwtExpirationInMillis(): number | null {
-    const token = this.getToken();
-    if (!token) return null;
 
-    try {
-      // JWT Token Aufbau: <HEADER>.<PAYLOAD>.<SIGNATURE>
-      // hole Payload aus dem JWT und dekodier es mit atob() zu einem normalen JSON-String
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return typeof payload.exp === 'number'
-        ? payload.exp * 1000 // Sek. → Millisekunden
-        : null;              // Kein gültiges Ablaufdatum
-    } catch (error) {
-      console.error('JWT-Dekodierung fehlgeschlagen:', error);
-      return null;
-    }
-  }
 }
