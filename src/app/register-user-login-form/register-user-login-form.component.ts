@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
-import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -13,28 +12,24 @@ import { environment } from '../../environments/environment';
   templateUrl: './register-user-login-form.component.html',
   styleUrl: './register-user-login-form.component.css'
 })
-export class RegisterUserLoginFormComponent {
+export class RegisterUserLoginFormComponent implements OnInit {
 
   static readonly API_URL = `${environment.apiBaseUrl}`;
 
   message: string = '';
-
-  registerForm: FormGroup;
   success = false;
   error = false;
-
   showPassword = false;
-
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
-  }
+  registerForm!: FormGroup;
 
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient) { }
+
+  ngOnInit() {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required]],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      email: [''],
+      username: [''],
+      password: [''],
       firstname: [''],
       lastname: [''],
       age: [''],
@@ -43,30 +38,31 @@ export class RegisterUserLoginFormComponent {
   }
 
   register() {
-    if (this.registerForm.valid) {
-      this.http.post<{ message: string }>(`${environment.apiBaseUrl}/auth/register`, this.registerForm.value)
-        .pipe(
-          catchError((error: HttpErrorResponse) => {
-            this.error = true;
-            this.success = false;
+    this.http.post<{ message: string }>(`${environment.apiBaseUrl}/auth/register`, this.registerForm.value)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.error = true;
+          this.success = false;
 
-            if (error.error && error.error.message) {
-              this.message = error.error.message;
-            } else {
-              this.message = 'Unbekannter Fehler. Bitte versuche es erneut.';
-            }
-
-            return of(null);
-          })
-        )
-        .subscribe((result: { message: string } | null) => {
-          if (result && result.message) {
-            this.message = result.message;
-            this.success = true;
-            this.error = false;
-            this.registerForm.reset();
+          if (error.error && error.error.message) {
+            this.message = error.error.message;
+          } else {
+            this.message = 'Unbekannter Fehler. Bitte versuche es erneut.';
           }
-        });
-    }
+          return of(null);
+        })
+      )
+      .subscribe((result: { message: string } | null) => {
+        if (result && result.message) {
+          this.message = result.message;
+          this.success = true;
+          this.error = false;
+          this.registerForm.reset();
+        }
+      });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }
