@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { tap, catchError, map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UserInfo } from '../models/userinfo';
 import { environment } from '../../environments/environment';
@@ -12,35 +12,27 @@ import { environment } from '../../environments/environment';
 export class AuthService {
 
   static readonly API_URL = `${environment.apiBaseUrl}`;
-
-
   private tokenKey = 'jwt_token';
 
   constructor(private http: HttpClient) { }
 
-
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/login`, { username, password }).pipe(
-      tap(response => {
-        sessionStorage.setItem(this.tokenKey, response.token);
+    const loginUrl = `${environment.apiBaseUrl}/auth/login`;
+    const userInfoUrl = `${environment.apiBaseUrl}/auth/member/userinfo`;
+
+    return this.http.post<{ token: string }>(loginUrl, { username, password }).pipe(
+      switchMap(({ token }) => {
+        sessionStorage.setItem(this.tokenKey, token);
+        return this.http.get<UserInfo>(userInfoUrl);
       }),
-      // Nach dem Speichern des Tokens, Userinfos abrufen
-      switchMap(() => this.fetchUserInfo()),
-      // fetchUserInfo() liefert z.B. UserInfo, wir mappen es auf true
+      tap(userInfo => {
+        sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+      }),
       map(() => true),
       catchError(() => {
         sessionStorage.removeItem(this.tokenKey);
-        sessionStorage.removeItem('userInfo'); // Userinfos entfernen falls vorhanden
+        sessionStorage.removeItem('userInfo');
         return of(false);
-      })
-    );
-  }
-
-
-  fetchUserInfo() {
-    return this.http.get<UserInfo>(`${environment.apiBaseUrl}/auth/member/userinfo`).pipe(
-      tap(userInfo => {
-        sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
       })
     );
   }
@@ -54,7 +46,6 @@ export class AuthService {
       return null;
     }
   }
-
 
   isSuperAdmin(): boolean {
     return this.getUserRole() === 'superadmin';
@@ -70,20 +61,15 @@ export class AuthService {
     return role === 'user' || this.isAdmin() || this.isSuperAdmin();
   }
 
-  // wird in der app.component.ts verwendet
   logout(): void {
     sessionStorage.removeItem(this.tokenKey);
   }
 
-  // wird in der Guard verwendet
-  isAuthenticated(): boolean {
-    return !!sessionStorage.getItem(this.tokenKey);
-  }
-
-  // wird beim Interceptor verwendet
   getToken(): string | null {
     return sessionStorage.getItem(this.tokenKey);
   }
 
-
+  isAuthenticated(): boolean {
+    return !!sessionStorage.getItem(this.tokenKey);
+  }
 }

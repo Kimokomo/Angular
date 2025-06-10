@@ -22,7 +22,7 @@ export const JwtInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, nex
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         authService.logout(); // sorgt dafür, dass Token gelöscht wird
-        router.navigate(['/login']); // oder dein Login-Pfad
+        router.navigate(['/login']);
       }
       return throwError(() => error);
     })
