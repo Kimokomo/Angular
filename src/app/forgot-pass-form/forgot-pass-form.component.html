@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-center mt-3">
+    <div class="card" style="width: 25rem; text-align: center; ">
+        <img src="pass.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+            <p class="card-text">Gib deine E-Mail-Adresse oder deinen Benutzernamen ein, damit wir dir einen Link senden
+                können, mit dem du zurück in dein Konto gelangst. </p>
+
+            <form [formGroup]="forgotpassForm" (ngSubmit)="handleForm()">
+                <input type="email" formControlName="emailOrUsername" class="form-control" placeholder="E-Mail oder Benutzername">
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="btn btn-primary" type="submit">Anmeldelink senden</button>
+                </div>
+            </form>
+
+        </div>
+        <div *ngIf="success" class="alert alert-success text-center mt-3">
+            {{ message }}
+        </div>
+        <div *ngIf="error" class="alert alert-danger text-center mt-3">
+            {{ message }}
+        </div>
+    </div>
+</div>

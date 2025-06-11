@@ -7,6 +7,8 @@ import { RegisterUserLoginFormComponent } from './register-user-login-form/regis
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { TerminBuchungComponent } from './termin-buchung/termin-buchung.component';
 import { TerminUebersichtComponent } from './termin-uebersicht/termin-uebersicht.component';
+import { ForgotPassFormComponent } from './forgot-pass-form/forgot-pass-form.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
 
@@ -47,6 +49,10 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   { path: 'register', component: RegisterUserLoginFormComponent },
+
+  { path: 'forgotpass', component: ForgotPassFormComponent },
+
+  { path: 'reset-password', component: ResetPasswordComponent },
 
   // wenn der Pfad http://localhost:4200/ ist dan zu /login 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
