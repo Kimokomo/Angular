@@ -52,25 +52,31 @@ export class ResetPasswordComponent {
           this.error = true;
 
           if (err.error && typeof err.error === 'object') {
-            const entries = Object.entries(err.error);
+            const hasFieldErrors = Object.entries(err.error).some(([key, _]) => key !== 'message');
 
-            entries.forEach(([field, message]) => {
-              const controlName = field.split('.').pop() ?? field;
-              if (this.resetPassForm.controls[controlName]) {
-                this.resetPassForm.controls[controlName].setErrors({ backend: message });
-              }
-            });
+            if (hasFieldErrors) {
+              Object.entries(err.error).forEach(([field, message]) => {
+                const controlName = field.split('.').pop() ?? field;
+                if (field !== 'message' && this.resetPassForm.controls[controlName]) {
+                  this.resetPassForm.controls[controlName].setErrors({ backend: message });
+                }
+              });
 
-            this.message = 'Ein Validierungsfehler ist aufgetreten.';
-          } else if (err.error?.message) {
-            this.message = err.error.message;
+              this.message = err.error.message ?? 'Ein Validierungsfehler ist aufgetreten.';
+            } else if (err.error.message) {
+              this.message = err.error.message;
+            } else {
+              this.message = 'Unbekannter Fehler. Bitte versuche es erneut.';
+            }
           } else {
             this.message = 'Unbekannter Fehler. Bitte versuche es erneut.';
           }
 
           return of(null);
         })
-      ).subscribe();
+      )
+      .subscribe();
   }
+
 }
 
