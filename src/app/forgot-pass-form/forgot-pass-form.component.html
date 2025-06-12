@@ -6,7 +6,15 @@
                 können, mit dem du zurück in dein Konto gelangst. </p>
 
             <form [formGroup]="forgotpassForm" (ngSubmit)="handleForm()">
-                <input type="email" formControlName="emailOrUsername" class="form-control" placeholder="E-Mail oder Benutzername">
+                <input type="email" formControlName="emailOrUsername" class="form-control"
+                    placeholder="E-Mail oder Benutzername">
+
+                <!-- Validierungsfehleranzeige -->
+                <div *ngIf="forgotpassForm.controls['emailOrUsername'].errors?.['backend']" class="text-danger mt-1">
+                    {{ forgotpassForm.controls['emailOrUsername'].errors?.['backend'] }}
+                </div>
+
+
                 <div class="d-flex justify-content-center mt-3">
                     <button class="btn btn-primary" type="submit">Anmeldelink senden</button>
                 </div>

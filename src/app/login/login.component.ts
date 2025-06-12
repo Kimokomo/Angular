@@ -16,6 +16,7 @@ export class LoginComponent {
   username = '';
   password = '';
   error = false;
+  showPassword = false;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -32,5 +33,9 @@ export class LoginComponent {
 
   register(): void {
     this.router.navigate(['/register']);
+  }
+
+   togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

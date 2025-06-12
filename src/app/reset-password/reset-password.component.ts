@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { catchError, of, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
@@ -20,10 +21,18 @@ export class ResetPasswordComponent {
   error = false;
   resetPassForm!: FormGroup
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private route: ActivatedRoute
+  ) { }
+
 
   ngOnInit() {
+    const token = this.route.snapshot.queryParamMap.get('token') || '';
+
     this.resetPassForm = this.fb.group({
+      token: [token],
       newPassword: [''],
       confirmNewPassword: ['']
     });
