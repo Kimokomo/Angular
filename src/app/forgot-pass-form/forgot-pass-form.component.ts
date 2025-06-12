@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
-import { catchError, of } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-forgot-pass-form',
@@ -20,7 +20,6 @@ export class ForgotPassFormComponent {
   error = false;
   forgotpassForm!: FormGroup;
 
-
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit() {
@@ -32,25 +31,21 @@ export class ForgotPassFormComponent {
   handleForm() {
     this.http.post<{ message: string }>(`${environment.apiBaseUrl}/auth/forgot`, this.forgotpassForm.value)
       .pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.error = true;
-          this.success = false;
-
-          if (error.error && error.error.message) {
-            this.message = error.error.message;
-          } else {
-            this.message = 'Unbekannter Fehler. Bitte versuche es erneut.';
-          }
-          return of(null);
-        })
-      )
-      .subscribe((result: { message: string } | null) => {
-        if (result && result.message) {
+        tap((result) => {
           this.message = result.message;
           this.success = true;
           this.error = false;
           this.forgotpassForm.reset();
-        }
-      });
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.error = true;
+          this.success = false;
+          this.message = error.error && error.error.message
+            ? error.error.message
+            : 'Unbekannter Fehler. Bitte versuche es erneut.';
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 }

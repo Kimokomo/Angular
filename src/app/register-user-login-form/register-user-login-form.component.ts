@@ -40,12 +40,26 @@ export class RegisterUserLoginFormComponent implements OnInit {
   register() {
     this.http.post<{ message: string }>(`${environment.apiBaseUrl}/auth/register`, this.registerForm.value)
       .pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.error = true;
+        catchError((err: HttpErrorResponse) => {
           this.success = false;
+          this.error = true;
 
-          if (error.error && error.error.message) {
-            this.message = error.error.message;
+          if (err.error && typeof err.error === 'object') {
+            const entries = Object.entries(err.error);
+
+            entries.forEach(([field, message]) => {
+              // Feldname direkt verwenden, da Backend keine Prefixe mehr sendet
+              if (this.registerForm.controls[field]) {
+                this.registerForm.controls[field].setErrors({ backend: message });
+              }
+            });
+
+            // Nur eine allgemeine Meldung, falls keine feldspezifischen Fehler da sind (Altersprüfung)
+            if (entries.length === 1) {
+              this.message = entries[0][1] as string;
+            }
+          } else if (err.error?.message) {
+            this.message = err.error.message;
           } else {
             this.message = 'Unbekannter Fehler. Bitte versuche es erneut.';
           }
@@ -61,6 +75,7 @@ export class RegisterUserLoginFormComponent implements OnInit {
         }
       });
   }
+
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;

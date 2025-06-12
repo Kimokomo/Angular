@@ -6,11 +6,19 @@
     <div class="form-floating mb-3">
       <input formControlName="email" type="email" class="form-control" id="email" placeholder="Email" />
       <label for="email">📧 Email*</label>
+      <!-- Fehlermeldung für email -->
+      <div *ngIf="registerForm.get('email')?.errors?.['backend']" class="text-danger mt-1">
+        {{ registerForm.get('email')?.errors?.['backend'] }}
+      </div>
     </div>
 
     <div class="form-floating mb-3">
       <input formControlName="username" type="text" class="form-control" id="username" placeholder="Username" />
       <label for="username">👤 Benutzername*</label>
+      <!-- Fehlermeldung für username -->
+      <div *ngIf="registerForm.get('username')?.errors?.['backend']" class="text-danger mt-1">
+        {{ registerForm.get('username')?.errors?.['backend'] }}
+      </div>
     </div>
 
     <div class="form-floating mb-3 position-relative">
@@ -18,6 +26,12 @@
         placeholder="Password" />
       <label for="password">🔒 Passwort*</label>
 
+      <!-- Fehlermeldung für password -->
+      <div *ngIf="registerForm.get('password')?.errors?.['backend']" class="text-danger mt-1">
+        {{ registerForm.get('password')?.errors?.['backend'] }}
+      </div>
+
+      <!-- Toogle für password -->
       <button type="button" (click)="togglePasswordVisibility()"
         class="btn btn-sm btn-outline-secondary position-absolute top-50 end-0 translate-middle-y me-2"
         style="z-index: 10;">
@@ -28,22 +42,38 @@
     <div class="form-floating mb-3">
       <input formControlName="firstname" type="text" class="form-control" id="firstname" placeholder="First Name" />
       <label for="firstname">First Name</label>
+      <!-- Fehlermeldung für firstname -->
+      <div *ngIf="registerForm.get('firstname')?.errors?.['backend']" class="text-danger mt-1">
+        {{ registerForm.get('firstname')?.errors?.['backend'] }}
+      </div>
     </div>
 
     <div class="form-floating mb-3">
       <input formControlName="lastname" type="text" class="form-control" id="lastname" placeholder="Last Name" />
       <label for="lastname">Last Name</label>
+      <!-- Fehlermeldung für lastname -->
+      <div *ngIf="registerForm.get('lastname')?.errors?.['backend']" class="text-danger mt-1">
+        {{ registerForm.get('lastname')?.errors?.['backend'] }}
+      </div>
     </div>
 
     <div class="form-floating mb-3">
       <input formControlName="age" type="number" class="form-control" id="age" placeholder="Age" />
       <label for="age">Age</label>
+      <!-- Fehlermeldung für age -->
+      <div *ngIf="registerForm.get('age')?.errors?.['backend']" class="text-danger mt-1">
+        {{ registerForm.get('age')?.errors?.['backend'] }}
+      </div>
     </div>
 
     <div class="form-floating mb-3">
       <input formControlName="dateOfBirth" type="date" class="form-control" id="dateOfBirth"
         placeholder="Date of Birth" />
       <label for="dateOfBirth">Date of Birth</label>
+      <!-- Fehlermeldung für dateOfBirth -->
+      <div *ngIf="registerForm.get('dateOfBirth')?.errors?.['backend']" class="text-danger mt-1">
+        {{ registerForm.get('dateOfBirth')?.errors?.['backend'] }}
+      </div>
     </div>
 
     <button class="btn btn-primary w-100" type="submit" [disabled]="registerForm.invalid">
