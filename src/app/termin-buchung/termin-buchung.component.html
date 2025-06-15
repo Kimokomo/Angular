@@ -1,1 +1,45 @@
+<div class="container py-4">
+  <!-- Horizontale Datumsauswahl -->
+  <div class="overflow-auto mb-4">
+    <div class="d-flex flex-nowrap gap-2">
+      <button class="btn btn-outline-secondary" *ngFor="let day of calendarDays"
+        [class.active]="isSameDay(day, selectedDay)" (click)="selectDay(day)">
+        <div class="fw-bold">{{ day | date: 'EEE' }}</div>
+        <div>{{ day | date: 'dd.MM.' }}</div>
+      </button>
+    </div>
+  </div>
 
+  <h5 class="mb-3">{{ selectedDay | date: 'fullDate' }}</h5>
+
+  <!-- Termin-Karten -->
+  <div class="card mb-3" *ngFor="let termin of appointments" [ngClass]="{
+      'bg-light text-muted': termin.status === 'UNAVAILABLE',
+      'border-success': termin.status === 'AVAILABLE'
+    }">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <div>
+        <h5 class="card-title mb-1">{{ termin.time }}</h5>
+        <p class="card-text mb-0">{{ termin.description }}</p>
+        <small *ngIf="termin.note" class="text-secondary">{{ termin.note }}</small>
+      </div>
+      <div class="text-end">
+        <span class="badge mb-2" [ngClass]="{
+            'bg-secondary': termin.status === 'UNAVAILABLE',
+            'bg-success': termin.status === 'AVAILABLE'
+          }">
+          {{ termin.status }}
+        </span>
+        <div class="text-muted small mb-2" style="min-height: 1em;">
+          <ng-container *ngIf="termin.spotsLeft !== null">
+            {{ termin.spotsLeft }} spots left
+          </ng-container>
+        </div>
+
+        <button class="btn btn-outline-primary btn-sm" *ngIf="termin.status === 'AVAILABLE'" (click)="buchen(termin)">
+          Buchen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
